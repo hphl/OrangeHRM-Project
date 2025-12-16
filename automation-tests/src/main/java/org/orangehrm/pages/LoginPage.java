@@ -36,12 +36,13 @@ public class LoginPage {
 
     public void enterUsername(String user) {
         log.info("Entering username: {}", user);
-        System.out.println("Current URL: " + driver.getCurrentUrl());
+        wait.until(ExpectedConditions.visibilityOfElementLocated(username)).clear();
         wait.until(ExpectedConditions.visibilityOfElementLocated(username)).sendKeys(user);
     }
 
     public void enterPassword(String pass) {
         log.info("Entering password (hidden)");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(password)).clear();
         wait.until(ExpectedConditions.visibilityOfElementLocated(password)).sendKeys(pass);
     }
 
@@ -56,17 +57,6 @@ public class LoginPage {
         } catch (Exception e) {
             log.error("Login error message NOT found.");
             return null;
-        }
-    }
-
-    public boolean isErrorMessagePresent() {
-        try {
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(1));
-            boolean present = driver.findElements(errorMessage).size() > 0;
-            driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(0));
-            return present;
-        } catch (Exception e) {
-            return false;
         }
     }
 

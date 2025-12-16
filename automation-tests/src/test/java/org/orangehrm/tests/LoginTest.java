@@ -30,11 +30,8 @@ public class LoginTest extends BaseTest {
         log.info("Starting test: loginWithValidCredentials");
         LoginPage login = new LoginPage(driver);
         login.open();
-
-        login.enterUsername(VALID_USERNAME);
-        login.enterPassword(VALID_PASSWORD);
-        login.clickLogin();
-        log.info("Login submitted. Validating Dashboard…");
+        login.login(VALID_USERNAME, VALID_PASSWORD);
+        log.info("Login submitted. Validating Dashboard");
 
         DashboardPage dashboard = new DashboardPage(driver);
         Assert.assertTrue(dashboard.isDashboardDisplayed(), "Dashboard is not visible.");
@@ -42,8 +39,8 @@ public class LoginTest extends BaseTest {
         log.info("Test passed: loginWithValidCredentials");
     }
 
-    @Story("Invalid login attempts should show an error")
-    @Description("Tests multiple invalid credentials and validates error handling.")
+    @Story("Invalid login attempts")
+    @Description("User cannot log with invalid credentials")
     @Test(dataProvider = "invalidCredentials", dataProviderClass = LoginDataProvider.class)
     public void loginWithInvalidCredentials(String user, String pass) {
 
@@ -54,21 +51,22 @@ public class LoginTest extends BaseTest {
 
         String error = loginPage.getErrorMessage();
 
-        log.info("Validating error message...");
         Assert.assertEquals(error, ERROR_INVALID_CREDENTIALS, "Error message is incorrect");
-
-        Assert.assertTrue(loginPage.isLoginButtonVisible(),
-                "User should remain on login page after failed login");
+        Assert.assertTrue(loginPage.isLoginButtonVisible(), "User should remain on login page after failed login");
 
         DashboardPage dashboard = new DashboardPage(driver);
-        Assert.assertFalse(dashboard.isDashboardDisplayed(),
-                "Dashboard should not be visible after invalid login");
+        Assert.assertFalse(dashboard.isDashboardDisplayed(), "Dashboard should not be visible after invalid login");
 
         log.info("Invalid login validation completed.");
     }
 
-    /*@Test
+    @Story("Account lock after multiple failures")
+    @Description("User is blocked after multiple failed login attempts")
+    @Test
     public void loginShouldBeBlockedAfterMultipleFailedAttempts() {
+
+        log.info("Starting test: loginShouldBeBlockedAfterMultipleFailedAttempts");
+
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
 
@@ -81,18 +79,25 @@ public class LoginTest extends BaseTest {
         Assert.assertEquals(
                 loginPage.getErrorMessage(),
                 ERROR_TOO_MANY_ATTEMPTS,
-                "The message 'Too many attempts' should be visible but it didn't"
+                "Expected lock message was not shown"
         );
 
         DashboardPage dashboardPage = new DashboardPage(driver);
         Assert.assertFalse(
                 dashboardPage.isDashboardDisplayed(),
-                "The user accessed even he shouldn't"
+                "Dashboard should not be visible after blocked"
         );
-    }*/
 
-    /*@Test//(dependsOnMethods = "loginShouldBeBlockedAfterMultipleFailedAttempts")
+        log.info("User correctly blocked after multiple failures");
+    }
+
+    @Story("Account remains locked even after correct credentials")
+    @Description("After too many failed attempts, user should remain blocked even if correct credentials are used.")
+    @Test//(dependsOnMethods = "loginShouldBeBlockedAfterMultipleFailedAttempts")
     public void loginShouldRemainBlockedEvenWithCorrectCredentials() {
+
+        log.info("Starting test: loginShouldRemainBlockedEvenWithCorrectCredentials");
+
         LoginPage loginPage = new LoginPage(driver);
         loginPage.open();
 
@@ -100,13 +105,16 @@ public class LoginTest extends BaseTest {
             loginPage.login(VALID_USERNAME, INVALID_PASSWORD);
         }
 
+        log.info("Trying one more invalid login (should remain blocked)");
         loginPage.login(VALID_USERNAME, INVALID_PASSWORD);
+
+        log.info("Trying valid credentials while blocked (should still be blocked)");
         loginPage.login(VALID_USERNAME, VALID_PASSWORD);
 
         Assert.assertEquals(
                 loginPage.getErrorMessage(),
                 ERROR_TOO_MANY_ATTEMPTS,
-                "The message didn't display about too many attempts"
+                "Dashboard should not be visible after too many invalid logins"
         );
 
         DashboardPage dashboardPage = new DashboardPage(driver);
@@ -114,5 +122,7 @@ public class LoginTest extends BaseTest {
                 dashboardPage.isDashboardDisplayed(),
                 "Dashboard should not be visible after too many invalid logins"
         );
-    }*/
+
+        log.info("Test passed: user remains blocked even with correct credentials");
+    }
 }

@@ -17,21 +17,19 @@ public class DashboardPage {
     private static final Logger log = LoggerFactory.getLogger(DashboardPage.class);
 
     public DashboardPage(WebDriver driver) {
-        //this.driver = driver;
+        //this.driver = driver; // Remove code if is not used in the future
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
 
     public boolean isDashboardDisplayed() {
         log.info("Checking if Dashboard is displayed");
         try {
-            return wait.until(ExpectedConditions.visibilityOfElementLocated(dashboardHeader)).isDisplayed();
+            return wait
+                    .until(ExpectedConditions.visibilityOfElementLocated(dashboardHeader))
+                    .isDisplayed();
         } catch(Exception exception) {
             log.warn("Dashboard is NOT displayed");
             return false;
         }
-    }
-
-    public String getDashboardText() {
-        return wait.until(ExpectedConditions.visibilityOfElementLocated(dashboardHeader)).getText();
     }
 }
