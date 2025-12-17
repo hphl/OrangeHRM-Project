@@ -51,5 +51,6 @@ out/
 
 # Artifacts
 /screenshots/
+automation-tests/screenshots/
 /allure-results/
 /allure-report/
