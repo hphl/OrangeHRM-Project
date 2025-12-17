@@ -57,14 +57,18 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.2.5</version>
                 <configuration>
-
                     <testFailureIgnore>true</testFailureIgnore>
+
+                    <suiteXmlFiles>
+                        <suiteXmlFile>src/test/resources/testng.xml</suiteXmlFile>
+                    </suiteXmlFiles>
 
                     <systemPropertyVariables>
                         <allure.results.directory>${project.build.directory}/allure-results</allure.results.directory>
                     </systemPropertyVariables>
 
                     <reportsDirectory>${project.build.directory}/surefire-reports</reportsDirectory>
+
                     <properties>
                         <property>
                             <name>listener</name>

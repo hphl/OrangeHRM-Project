@@ -5,7 +5,7 @@
         <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
     </listeners>
 
-    <test name="Chrome Tests" parallel="tests" thread-count="3">
+    <test name="Chrome Tests">
         <parameter name="browser" value="chrome"/>
         <classes>
             <class name="org.orangehrm.tests.LoginTest"/>

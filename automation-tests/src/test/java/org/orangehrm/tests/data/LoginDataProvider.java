@@ -11,9 +11,15 @@ public class LoginDataProvider {
                 {"admin", "admin123"},
                 {"AdminWrong", "adminWrong"},
                 {"AdminWrong", "admin123"}
-                /*{"", "admin123"},
+        };
+    }
+
+    @DataProvider(name = "requiredCredentials")
+    public Object[][] requiredCredentials() {
+        return new Object[][]{
+                {"", "admin123"},
                 {"Admin", ""},
-                {"", ""},*/
+                {"", ""}
         };
     }
 }

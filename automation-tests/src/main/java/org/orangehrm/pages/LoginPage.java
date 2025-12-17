@@ -2,6 +2,7 @@ package org.orangehrm.pages;
 
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
+import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -36,19 +37,45 @@ public class LoginPage {
 
     public void enterUsername(String user) {
         log.info("Entering username: {}", user);
-        wait.until(ExpectedConditions.visibilityOfElementLocated(username)).clear();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(username)).sendKeys(user);
+        wait.until(driver -> {
+            try {
+                var element = driver.findElement(username);
+                element.clear();
+                element.sendKeys(user);
+                return true;
+            } catch (Exception e) {
+                log.warn("Retrying username input due to DOM refresh");
+                return false;
+            }
+        });
     }
 
     public void enterPassword(String pass) {
         log.info("Entering password (hidden)");
-        wait.until(ExpectedConditions.visibilityOfElementLocated(password)).clear();
-        wait.until(ExpectedConditions.visibilityOfElementLocated(password)).sendKeys(pass);
+        wait.until(driver -> {
+            try {
+                var element = driver.findElement(password);
+                element.clear();
+                element.sendKeys(pass);
+                return true;
+            } catch (Exception e) {
+                log.warn("Retrying password input due to DOM refresh");
+                return false;
+            }
+        });
     }
 
     public void clickLogin() {
         log.info("Clicking Login button");
-        wait.until(ExpectedConditions.elementToBeClickable(loginBtn)).click();
+        for (int i = 0; i < 3; i++) {
+            try {
+                wait.until(ExpectedConditions.elementToBeClickable(loginBtn)).click();
+                return;
+            } catch (Exception e) {
+                log.warn("Stale element on login button, retrying {}", i + 1);
+            }
+        }
+        throw new RuntimeException("Failed to click login button due to stale element");
     }
 
     public String getErrorMessage() {

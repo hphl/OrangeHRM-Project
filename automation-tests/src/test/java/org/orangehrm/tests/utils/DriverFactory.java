@@ -9,10 +9,6 @@ public class DriverFactory {
 
     public static WebDriver createInstance(String browserName) {
 
-        if (browserName == null) {
-            browserName = "chrome";
-        }
-
         browserName = browserName.toLowerCase();
 
         return switch (browserName) {

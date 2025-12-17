@@ -25,7 +25,7 @@ public class BaseTest {
 
     @BeforeMethod(alwaysRun = true)
     @Parameters("browser")
-    public void setup(Method method, @Optional("chrome") String browser) {
+    public void setup(Method method, String browser) {
         this.browserName = browser;
         log.info(
                 "=== STARTING TEST: {}.{} (browser={}, thread={}) ===",
