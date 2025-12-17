@@ -9,11 +9,9 @@ import org.orangehrm.core.logging.LoggerFactory;
 import org.orangehrm.core.utils.ScreenshotUtil;
 import org.orangehrm.tests.utils.DriverFactory;
 import org.testng.ITestResult;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Optional;
-import org.testng.annotations.Parameters;
+import org.testng.annotations.*;
 
+import java.io.File;
 import java.lang.reflect.Method;
 
 
@@ -74,5 +72,18 @@ public class BaseTest {
     @Attachment(value = "{0}", type = "image/png")
     public byte[] attachScreenshotToAllure(String name) {
         return ((TakesScreenshot) driver).getScreenshotAs(OutputType.BYTES);
+    }
+
+    @BeforeSuite
+    public void cleanScreenshotsFolder() {
+        File screenshotsDir = new File("screenshots");
+
+        if (screenshotsDir.exists()) {
+            for (File file : screenshotsDir.listFiles()) {
+                file.delete();
+            }
+        }
+
+        screenshotsDir.mkdirs();
     }
 }
