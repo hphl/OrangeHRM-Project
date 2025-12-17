@@ -48,3 +48,8 @@ logs/
 
 # Other
 out/
+
+# Artifacts
+/screenshots/
+/allure-results/
+/allure-report/

@@ -2,24 +2,26 @@ package org.orangehrm.tests.data;
 
 import org.testng.annotations.DataProvider;
 
+import static org.orangehrm.tests.utils.LoginConstants.*;
+
 public class LoginDataProvider {
 
     @DataProvider(name = "invalidCredentials")
     public Object[][] invalidCredentials() {
         return new Object[][]{
-                {"Admin", "WrongPass123"},
-                {"admin", "admin123"},
-                {"AdminWrong", "adminWrong"},
-                {"AdminWrong", "admin123"}
+                {VALID_USERNAME, INVALID_PASSWORD},
+                {"admin", VALID_PASSWORD},
+                {INVALID_USERNAME, INVALID_PASSWORD},
+                {INVALID_USERNAME, VALID_PASSWORD}
         };
     }
 
-    @DataProvider(name = "requiredCredentials")
-    public Object[][] requiredCredentials() {
+    @DataProvider(name = "mandatoryFields")
+    public Object[][] mandatoryFields() {
         return new Object[][]{
-                {"", "admin123"},
-                {"Admin", ""},
-                {"", ""}
+                {"",  VALID_PASSWORD, 1},
+                {VALID_USERNAME, "", 1},
+                {"", "", 2}
         };
     }
 }

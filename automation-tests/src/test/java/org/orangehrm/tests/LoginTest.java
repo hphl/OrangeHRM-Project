@@ -125,4 +125,32 @@ public class LoginTest extends BaseTest {
 
         log.info("Test passed: user remains blocked even with correct credentials");
     }
+
+    @Story("Login should validate mandatory fields")
+    @Description("Validates that login cannot be submitted with empty mandatory fields")
+    @Test(dataProvider = "mandatoryFields", dataProviderClass = LoginDataProvider.class)
+    public void loginShouldValidateMandatoryFields(String user, String pass, int expectedErrors) {
+
+        log.info("Executing loginShouldValidateMandatoryFields with user='{}'", user);
+
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.open();
+        loginPage.login(user, pass);
+
+        Assert.assertTrue(
+                loginPage.isLoginButtonVisible(),
+                "Login button should remain visible after invalid submission"
+        );
+
+        Assert.assertFalse(
+                new DashboardPage(driver).isDashboardDisplayed(),
+                "Dashboard must NOT be visible when mandatory fields are missing"
+        );
+
+        Assert.assertTrue(
+                loginPage.hasRequiredFieldErrors(expectedErrors), "Required field validation messages should be displayed"
+        );
+
+        log.info("Required field errors detected: {}", expectedErrors);
+    }
 }

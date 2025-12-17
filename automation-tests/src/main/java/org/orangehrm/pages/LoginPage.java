@@ -22,6 +22,7 @@ public class LoginPage {
     private final By loginBtn = By.cssSelector("button[type='submit']");
     private final By errorMessage = By.cssSelector(".oxd-alert-content-text");
     private static final Logger log = LoggerFactory.getLogger(LoginPage.class);
+    private final By requiredFieldErrors = By.cssSelector(".oxd-input-field-error-message");
 
 
     public LoginPage(WebDriver driver) {
@@ -95,5 +96,13 @@ public class LoginPage {
         enterUsername(user);
         enterPassword(pass);
         clickLogin();
+    }
+
+    public int getRequiredFieldErrorCount() {
+        return driver.findElements(requiredFieldErrors).size();
+    }
+
+    public boolean hasRequiredFieldErrors(int expectedErrors) {
+        return getRequiredFieldErrorCount() == expectedErrors;
     }
 }
