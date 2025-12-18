@@ -24,17 +24,17 @@ public class LoginTest extends BaseTest {
 
     @Story("Valid login attempts should show dashboard")
     @Description("Tests valid login with correct credentials")
-    @Test
-    public void loginWithValidCredentials() {
+    @Test(dataProvider = "validCredentials", dataProviderClass = LoginDataProvider.class)
+    public void loginWithValidCredentials(String scenario, String user, String pass) {
 
         log.info("Starting test: loginWithValidCredentials");
         LoginPage login = new LoginPage(driver);
         login.open();
-        login.login(VALID_USERNAME, VALID_PASSWORD);
+        login.login(user, pass);
         log.info("Login submitted. Validating Dashboard");
 
         DashboardPage dashboard = new DashboardPage(driver);
-        Assert.assertTrue(dashboard.isDashboardDisplayed(), "Dashboard is not visible.");
+        Assert.assertTrue(dashboard.isDashboardDisplayed(), "Dashboard is not visible. Failed for scenario: " + scenario);
 
         log.info("Test passed: loginWithValidCredentials");
     }

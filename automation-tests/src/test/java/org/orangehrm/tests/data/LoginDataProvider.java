@@ -6,6 +6,15 @@ import static org.orangehrm.tests.utils.LoginConstants.*;
 
 public class LoginDataProvider {
 
+    @DataProvider(name = "validCredentials")
+    public Object[][] validCredentials() {
+        return new Object[][]{
+                {"No whitespace", VALID_USERNAME, VALID_PASSWORD},
+                {"Leading whitespace", " " + VALID_USERNAME, VALID_PASSWORD},
+                {"Trailing whitespace", VALID_USERNAME + " ", VALID_PASSWORD}
+        };
+    }
+
     @DataProvider(name = "invalidCredentials")
     public Object[][] invalidCredentials() {
         return new Object[][]{
