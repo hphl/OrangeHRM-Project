@@ -11,7 +11,8 @@ public class LoginDataProvider {
         return new Object[][]{
                 {"No whitespace", VALID_USERNAME, VALID_PASSWORD},
                 {"Leading whitespace", " " + VALID_USERNAME, VALID_PASSWORD},
-                {"Trailing whitespace", VALID_USERNAME + " ", VALID_PASSWORD}
+                {"Trailing whitespace", VALID_USERNAME + " ", VALID_PASSWORD},
+                {"Leading and Trailing whitespace", " " + VALID_USERNAME + " ", VALID_PASSWORD}
         };
     }
 
@@ -20,8 +21,10 @@ public class LoginDataProvider {
         return new Object[][]{
                 {VALID_USERNAME, INVALID_PASSWORD},
                 {"admin", VALID_PASSWORD},
+                {"AdMiN", VALID_PASSWORD},
                 {INVALID_USERNAME, INVALID_PASSWORD},
-                {INVALID_USERNAME, VALID_PASSWORD}
+                {INVALID_USERNAME, VALID_PASSWORD},
+                {INVALID_USERNAME + " ", VALID_PASSWORD}
         };
     }
 
@@ -30,7 +33,8 @@ public class LoginDataProvider {
         return new Object[][]{
                 {"",  VALID_PASSWORD, 1},
                 {VALID_USERNAME, "", 1},
-                {"", "", 2}
+                {"", "", 2},
+                {" ", VALID_PASSWORD, 1}
         };
     }
 }

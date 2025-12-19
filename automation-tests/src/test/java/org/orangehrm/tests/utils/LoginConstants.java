@@ -10,5 +10,5 @@ public class LoginConstants {
     public static final String ERROR_INVALID_CREDENTIALS = "Invalid credentials";
     public static final String ERROR_TOO_MANY_ATTEMPTS = "Too many attempts, please try again later";
 
-    public static final int MAX_FAILED_ATTEMPTS = 10;
+    public static final int MAX_FAILED_ATTEMPTS = 5;
 }
