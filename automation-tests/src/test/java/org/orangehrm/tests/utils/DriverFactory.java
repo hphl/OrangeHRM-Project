@@ -5,6 +5,8 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
+import static org.orangehrm.tests.utils.Constants.*;
+
 public class DriverFactory {
 
     public static WebDriver createInstance(String browserName) {
@@ -12,10 +14,10 @@ public class DriverFactory {
         browserName = browserName.toLowerCase();
 
         return switch (browserName) {
-            case "chrome" -> new ChromeDriver();
-            case "firefox" -> new FirefoxDriver();
-            case "edge" -> new EdgeDriver();
-            default -> throw new IllegalArgumentException("Unsupported browser: " + browserName);
+            case BROWSER_CHROME -> new ChromeDriver();
+            case BROWSER_FIREFOX -> new FirefoxDriver();
+            case BROWSER_EDGE -> new EdgeDriver();
+            default -> throw new IllegalArgumentException(ERROR_SUPPORTED_BROWSER + browserName);
         };
     }
 }
